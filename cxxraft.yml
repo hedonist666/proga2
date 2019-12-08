@@ -1,0 +1,13 @@
+---
+:scr: default.sh
+:sources:
+  avl.hxx:
+    :deps:
+      standart: mixin
+      math: mixin
+    :sample: default
+  test_avl.cxx:
+    :deps:
+      catch: local
+      standart: mixin
+    :sample: test
