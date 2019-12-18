@@ -1,5 +1,7 @@
 #include <iostream>
 #include <fstream>
+#include <map>
+#include <sstream>
 #include <vector>
 #include <utility>
 #include <array>
@@ -40,7 +42,7 @@ struct Completion {
 
   void construct(std::vector<std::pair<Cr, size_t>> v) {
     sort(v.begin(), v.end(), [](auto x, auto y) {
-        return x.second < y.second;
+        return x.second > y.second;
         });
     for (auto& e : v) {
       insert(head, e.first.begin());
@@ -68,8 +70,8 @@ struct Completion {
         Cr tmp(input, _input + 1);
         Cr tmp1(e_it, e.v.end());
         e.v.resize(e_it - e.v.begin());
-        e.children.push_back(tmp);
         e.children.push_back(tmp1);
+        e.children.push_back(tmp);
         return true;
       }
     }
@@ -92,12 +94,14 @@ struct Completion {
 
   template <typename Iter>
   void show(Iter input) {
+    res.clear();
     Cr tmp {};
     for (auto& e : head) {
       run(input, e, tmp);
     }
     for (auto& e : res) {
-      std::cout << e << std::endl;
+      Cr str(e.begin(), e.end() - 1);
+      std::cout << str << std::endl;
     }
   }
 
@@ -141,13 +145,26 @@ struct Completion {
 
 int main() {
   using namespace std;
+  char term = '_';
   ifstream ifs("input");  
-  char term = '1';
-  Completion<char, string> comp (ifs, '1');
-  string input {"w"};
-  input.push_back(term);
-  comp.show(input.begin());
-  cout << "===============" << endl;
+  map<string, size_t> words;
+  string buf;
+  while (ifs >> buf) {
+    words[buf]++;
+  }
+  stringstream ss{};
+  for (auto [word, num] : words) {
+    ss << word << term << ' ' << num;
+    cout << word << ' ' << num << endl;
+  }
+  Completion<char, string> comp(ss, term);
   comp.show_tree();
-  return 0;
+  string word;
+  cout << "===============" << endl;
+  while (666) {
+    cout << "type a word:" << endl;
+    cin >> word;
+    word += term;
+    comp.show(word.begin());
+  }
 }
