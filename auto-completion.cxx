@@ -115,7 +115,7 @@ struct Completion {
     if (*input != terminator) {
       auto cur_it = cur.v.begin();
       for (;cur_it != cur.v.end() && *cur_it == *input && *input != terminator; ++cur_it, ++input);
-      if (cur_it == cur.v.end()) {
+      if (cur_it == cur.v.end() || *input == terminator) {
         for (auto& e : cur.v) {
           tmp.push_back(e);
         }
