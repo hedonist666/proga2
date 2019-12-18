@@ -56,21 +56,25 @@ struct Completion {
         continue;
       }
       auto e_it = e.v.begin();
-      for (;*input == *e_it && e_it != e.v.end() && *input != terminator; ++e_it, ++input);
-      if (*input == terminator && e_it == e.v.end()) {
+      for (;*input == *e_it && *e_it != terminator && *input != terminator; ++e_it, ++input);
+      if (*input == terminator && *e_it == terminator) {
         return true;
       }
-      if (e_it == e.v.end()) {
+      if (*e_it == terminator) {
         if (insert(e.children, input)) return true;
         return false;
       }
       else {
         auto _input = input;
-        while (*_input != terminator) ++_input;
-        Cr tmp(input, _input + 1);
+        while (*_input != terminator) ++_input; ++_input;
+        Cr tmp(input, _input);
         Cr tmp1(e_it, e.v.end());
         e.v.resize(e_it - e.v.begin());
+        //std::cout << tmp1 << ' ' << tmp << std::endl;
+        auto tmp_v = e.children;
+        e.children.clear();
         e.children.push_back(tmp1);
+        e.children[0].children = tmp_v;
         e.children.push_back(tmp);
         return true;
       }
@@ -85,7 +89,7 @@ struct Completion {
     _show_tree(head);
   }
   void _show_tree(std::vector<Node<Cr>> node) {
-      for (auto& e : node) {
+    for (auto& e : node) {
       std::cout << e.v << ' ';
       _show_tree(e.children);
       std::cout << std::endl;
@@ -158,7 +162,7 @@ int main() {
     cout << word << ' ' << num << endl;
   }
   Completion<char, string> comp(ss, term);
-  comp.show_tree();
+  //comp.show_tree();
   string word;
   cout << "===============" << endl;
   while (666) {
