@@ -11,13 +11,13 @@
       standart: mixin
       math: mixin
     :sample: default
-  test.cxx:
-    :deps:
-      catch: local
-      standart: mixin
-    :sample: test
   auto-completion.cxx:
     :deps:
       standart: mixin
       math: mixin
     :sample: default
+  test_avl.cxx:
+    :deps:
+      catch: local
+      standart: mixin
+    :sample: test

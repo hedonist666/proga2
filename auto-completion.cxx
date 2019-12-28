@@ -70,7 +70,6 @@ struct Completion {
         Cr tmp(input, _input);
         Cr tmp1(e_it, e.v.end());
         e.v.resize(e_it - e.v.begin());
-        //std::cout << tmp1 << ' ' << tmp << std::endl;
         auto tmp_v = e.children;
         e.children.clear();
         e.children.push_back(tmp1);
@@ -162,7 +161,6 @@ int main() {
     cout << word << ' ' << num << endl;
   }
   Completion<char, string> comp(ss, term);
-  //comp.show_tree();
   string word;
   cout << "===============" << endl;
   while (666) {
